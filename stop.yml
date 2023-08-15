@@ -1,0 +1,5 @@
+---
+- hosts: [redmine]
+  roles:
+  - role: redmine
+    redmine_action: stop
