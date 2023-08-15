@@ -1,0 +1,5 @@
+---
+- name: Start redmine
+  command: docker-compose up -d
+  args:
+    chdir: "{{ redmine_deploy_dir }}"

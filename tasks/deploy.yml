@@ -1,0 +1,41 @@
+---
+- name: Create directories for redmine
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+  with_items:
+    - "{{ redmine_data_dir }}"
+    - "{{ redmine_data_dir }}/files"
+    - "{{ redmine_data_dir }}/plugins"
+    - "{{ redmine_data_dir }}/themes"
+    - "{{ redmine_data_dir }}/repository"
+  become: true
+
+- name: Create directories for redmine
+  file:
+    path: "{{ redmine_deploy_dir }}/db_data/mysql"
+    state: directory
+    mode: 0755
+    owner: "999"
+    group: "999"
+  become: true
+
+- name: Render docker-compose file
+  template:
+    src: "docker-compose.yml"
+    dest: "{{ redmine_deploy_dir }}/docker-compose.yml"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+  become: true
+
+# - name: Render service nginx config file
+#   template:
+#     src: "nginx.conf"
+#     dest: "/etc/nginx/sites-enabled/5080_redmine.conf"
+#     mode: 0644
+#     owner: "{{ default_user }}"
+#     group: "{{ default_user }}"
+#   become: true

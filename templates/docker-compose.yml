@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+  redmine:
+    image: redmine:{{ redmine_version }}
+    restart: always
+    volumes:
+      - "{{ redmine_data_dir }}/files/:/usr/src/redmine/files/"
+      - "{{ redmine_data_dir }}/plugins/:/usr/src/redmine/plugins/"
+      - "{{ redmine_data_dir }}/themes/:/usr/src/redmine/public/themes/"
+      - "{{ redmine_logs_dir }}:/usr/src/redmine/logs"
+      - "{{ redmine_data_dir }}/repository/:/opt/repository/"
+    ports:
+      - 127.0.0.1:5080:3000
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: "{{ redmine_mysql_pass }}"
+      REDMINE_DB_USERNAME: redmine
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    depends_on:
+      - db
+
+  db:
+    image: percona:5.7
+    restart: always
+    volumes:
+      - "{{ redmine_deploy_dir }}/db_data/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: abacaba
+      MYSQL_USER: redmine
+      MYSQL_PASSWORD: "{{ redmine_mysql_pass }}"
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: redmine
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"

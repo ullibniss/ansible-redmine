@@ -1,0 +1,10 @@
+---
+- name: Stop redmine
+  command: docker-compose logs
+  args:
+    chdir: "{{ redmine_deploy_dir }}"
+  register: logs
+
+- name: Show logs
+  debug:
+    msg: "{{ logs }}"

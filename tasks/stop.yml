@@ -1,0 +1,5 @@
+---
+- name: Stop redmine
+  command: docker-compose stop
+  args:
+    chdir: "{{ redmine_deploy_dir }}"

@@ -1,0 +1,7 @@
+redmine_deploy_dir: "/opt/redmine"
+redmine_data_dir: "{{ redmine_deploy_dir }}/data"
+redmine_logs_dir: "{{ redmine_deploy_dir }}/logs"
+redmine_version: "5.0.5-alpine3.18"
+redmine_mysql_pass: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_lowercase', 'digits'], length=16) }}"
+
+default_user: "{{ lookup('env','USER') }}"
